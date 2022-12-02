@@ -1,0 +1,26 @@
+Introduction to the PL/SQL package – introduce you to PL/SQL packages and explain to you the advantages of using them in your application development.
+create or replace procedure emp_job(pjob varchar2 ,p_emprefcur in out sys_refcursor) is
+begin
+    open p_emprefcur for select empno,ename from emp where job=pjob ;
+end;
+
+set serveroutput on;
+declare 
+vempno emp.empno%type;
+vename emp.ename%type;
+vjob emp.job%type :='&JOb';
+vemprefcur sys_refcursor;
+begin
+emp_job(vjob,vemprefcur);
+loop
+fetch vemprefcur into vempno,vename;
+exit when vemprefcur%NOTFOUND ;
+dbms_output.put_line(vempno||'  '||vename);
+end loop;
+close vemprefcur;
+end;
+
+create or replace procedure empcur(eno number, p_empcur in out sys_refcursor) is
+begin
+    open p_empcur for select ename,job,sal from emp where empno=eno;
+end;
