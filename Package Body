@@ -1,0 +1,21 @@
+Package body – learn how to create a package body.
+
+create or replace package pk_80 as
+procedure updatesal(eno in emp.empno%type,salary out emp.sal%type);
+end pk_80;
+
+create or replace package body pk_80 as
+procedure updatesal(eno in emp.empno%type,salary out emp.sal%type) is
+begin
+update emp set sal=sal+200  where empno=eno;
+select sal into salary from emp where empno=eno;
+end updatesal;
+end pk_80;
+
+set serveroutput on;
+declare
+sa emp.sal%type;
+begin
+pk_80.updatesal(7900,sa);
+dbms_output.put_line('The salary of the emp is'||sa);
+end;
